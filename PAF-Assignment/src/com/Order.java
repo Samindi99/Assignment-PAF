@@ -2,6 +2,7 @@ package com;
 import java.sql.*;
 public class Order
 { 
+	//database connection
 	private Connection connect() 
 	{ 
 		Connection con = null; 
@@ -18,6 +19,7 @@ public class Order
 		return con; 
 	} 
 	
+	//retrieve order details
 	public String readOrder() 
 	{ 
 		String output = ""; 
@@ -70,4 +72,46 @@ public class Order
 		} 
 		return output; 
 	}
+	
+	//insert order details
+	public String insertOrder(String description, String value, String quantity) 
+	{ 
+			String output = ""; 
+			
+			try
+			{ 
+				 Connection con = connect(); 
+				 
+				 if (con == null) 
+				 
+				 { 
+					 return "Error while connecting to the database for inserting."; 
+				 } 
+				 
+				 // create a prepared statement
+				 String query = " insert into paf_assignment.assignment_order(orderID, orderDescription, orderValue, orderQuantity) values (?, ?, ?, ?)";
+				 
+				 PreparedStatement preparedStmt = con.prepareStatement(query); 
+				 
+				 // binding values
+				 preparedStmt.setInt(1, 0); 
+				 preparedStmt.setString(2, description); 
+				 preparedStmt.setDouble(3, Double.parseDouble(value)); 
+				 preparedStmt.setString(4, quantity); 
+				 
+				 // execute the statement
+				 preparedStmt.execute(); 
+				 con.close(); 
+				 
+				 String newOrders = readOrder(); 
+				 output = "{\"status\":\"success\", \"data\": \"" + newOrders + "\"}"; 
+			} 
+			catch (Exception e) 
+			{ 
+				 output = "{\"status\":\"error\", \"data\":\"Error while inserting the order.\"}"; 
+				 System.err.println(e.getMessage()); 
+			} 
+			
+			return output; 
+	} 
 }				 
