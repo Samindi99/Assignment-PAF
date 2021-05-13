@@ -113,5 +113,45 @@ public class Order
 			} 
 			
 			return output; 
-	} 
+	}
+	
+	//update Order details
+	public String updateOrder(String ID, String description, String value, String quantity) 
+	{ 
+			String output = ""; 
+			try
+			{ 
+				Connection con = connect(); 
+				 
+				if (con == null) 
+				{ 
+					return "Error while connecting to the database for updating."; 
+				} 
+				 
+				// create a prepared statement
+				String query = "UPDATE paf_assignment.assignment_order SET orderDescription=?, orderValue=?, orderQuantity=? WHERE orderID=?"; 
+				 
+				PreparedStatement preparedStmt = con.prepareStatement(query); 
+					 
+				// binding values
+				preparedStmt.setString(1, description);  
+				preparedStmt.setDouble(2, Double.parseDouble(value)); 
+				preparedStmt.setString(3, quantity); 
+				preparedStmt.setInt(4, Integer.parseInt(ID)); 
+					 
+				// execute the statement
+				preparedStmt.execute(); 
+				con.close(); 
+					 
+				String newOrders = readOrder(); 
+				output = "{\"status\":\"success\", \"data\": \"" + newOrders + "\"}"; 
+			} 
+			catch (Exception e) 
+			{ 
+				 output = "{\"status\":\"error\", \"data\": \"Error while updating the order.\"}"; 
+				 System.err.println(e.getMessage()); 
+			} 
+					
+			return output; 
+		} 
 }				 
