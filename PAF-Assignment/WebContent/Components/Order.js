@@ -79,3 +79,48 @@ $(document).on("click", ".btnUpdate", function(event)
 	 $("#orderQuantity").val($(this).closest("tr").find('td:eq(2)').text()); 
 });
 
+// REMOVE =============================================
+$(document).on("click", ".btnRemove", function(event) 
+{
+	$.ajax( 
+ 	{ 
+ 		url : "OrderAPI", 
+ 		type : "DELETE", 
+ 		data : "orderID=" + $(this).data("orderid"),
+ 		dataType : "text", 
+ 		complete : function(response, status) 
+ 		{ 
+ 			onOrderDeleteComplete(response.responseText, status); 
+ 		} 
+ 	}); 
+});
+
+
+function onOrderDeleteComplete(response, status)
+{ 
+	if (status == "success") 
+ 	{ 
+ 		var resultSet = JSON.parse(response); 
+ 
+		if (resultSet.status.trim() == "success") 
+ 		{ 
+ 			$("#alertSuccess").text("Successfully deleted."); 
+ 			$("#alertSuccess").show(); 
+ 			
+			$("#divOrdersGrid").html(resultSet.data); 
+ 		} else if (resultSet.status.trim() == "error") 
+ 		{ 
+ 			$("#alertError").text(resultSet.data); 
+ 			$("#alertError").show(); 
+ 		} 
+ 	} else if (status == "error") 
+ 	{ 
+ 		$("#alertError").text("Error while deleting."); 
+ 		$("#alertError").show(); 
+ 	} else
+ 	{ 
+ 		$("#alertError").text("Unknown error while deleting.."); 
+ 		$("#alertError").show(); 
+ 	} 
+
+}
