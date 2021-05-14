@@ -69,3 +69,13 @@ function onOrderSaveComplete(response, status)
 	$("#hidOrderIDSave").val(""); 
  	$("#formOrder")[0].reset(); 
 }
+
+// UPDATE==========================================
+$(document).on("click", ".btnUpdate", function(event) 
+{ 
+	 $("#hidOrderIDSave").val($(this).closest("tr").find('#hidOrderIDUpdate').val()); 
+	 $("#orderDescription").val($(this).closest("tr").find('td:eq(0)').text()); 
+	 $("#orderValue").val($(this).closest("tr").find('td:eq(1)').text()); 
+	 $("#orderQuantity").val($(this).closest("tr").find('td:eq(2)').text()); 
+});
+
