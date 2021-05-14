@@ -124,3 +124,46 @@ function onOrderDeleteComplete(response, status)
  	} 
 
 }
+
+
+// CLIENT-MODEL================================================================
+function validateOrderForm() 
+{ 
+	// Description
+	if ($("#orderDescription").val().trim() == "") 
+ 	{ 
+ 		return "Insert Order Description."; 
+ 	} 
+
+	// Value
+	if ($("#orderValue").val().trim() == "") 
+ 	{ 
+ 		return "Insert Order Value."; 
+ 	}
+
+	// Quantity
+	if ($("#orderQuantity").val().trim() == "") 
+	 { 
+		 return "Insert Order Quantity."; 
+	 } 
+	
+	// is numerical value
+	var tmpValue = $("#orderValue").val().trim(); 
+	if (!$.isNumeric(tmpValue)) 
+ 	{ 
+ 	return "Insert a numerical value for Order Value."; 
+ 	} 
+	
+	
+	// convert to decimal price
+ 	$("#orderValue").val(parseFloat(tmpValue).toFixed(2)); 
+
+
+
+	// DESCRIPTION------------------------
+	if ($("#orderDescription").val().trim() == "") 
+ 	{ 
+ 		return "Insert Order Description."; 
+ 	} 
+	return true; 
+}
